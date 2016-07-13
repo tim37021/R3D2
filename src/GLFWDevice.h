@@ -17,7 +17,8 @@ namespace r3d
             ~GLFWDevice();
             virtual void setWindowCaption(const std::string &caption);
             virtual bool isRunning();
-            virtual void pollEvents();
+            virtual void update();
+            virtual void setSwapInterval(uint32_t interval);
             virtual void swapBuffers();
             virtual double getTime();
         private:

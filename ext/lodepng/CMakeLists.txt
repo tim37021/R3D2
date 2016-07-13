@@ -1,0 +1,6 @@
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
+
+PROJECT(lodepng)
+
+ADD_LIBRARY(lodepng STATIC ./src/lodepng.cpp)
+

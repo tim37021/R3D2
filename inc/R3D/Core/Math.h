@@ -12,6 +12,13 @@ namespace r3d
         struct Vector2
         {
             T x, y;
+
+            Vector2()
+                : x(0), y(0) 
+            {
+
+            }
+
             Vector2(T x_, T y_)
                 : x(x_), y(y_) 
             {

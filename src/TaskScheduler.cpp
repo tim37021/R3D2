@@ -17,10 +17,11 @@ namespace r3d
             if(!m_Queue.empty()) {
                 Task *top_task = m_Queue.top();
                 m_Queue.pop();
+                m_Mutex.unlock();
 
                 top_task->execute();
-            }
-            m_Mutex.unlock();
+            }else
+                m_Mutex.unlock();
         }
     }
 }

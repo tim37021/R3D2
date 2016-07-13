@@ -4,8 +4,36 @@
 using namespace r3d;
 
 using namespace core;
+using namespace rendering;
 
 Device *device=nullptr;
+
+class MyFinishTask: public Task
+{
+public:
+    MyFinishTask(): Task(0){}
+    virtual ~MyFinishTask()=default;
+    virtual void execute()
+    {
+        fprintf(stderr, "Finish image loading\n");
+    }
+};
+
+class MyTask: public Task
+{
+public:
+    MyTask(TaskScheduler *t): Task(0), ts(t){}
+    virtual ~MyTask()=default;
+    virtual void execute()
+    {
+        image.loadFromFile("test.png");
+        ts->scheduleTask(&tfinish);
+    }
+private:
+    TaskScheduler *ts;
+    MyFinishTask tfinish;
+    Image image;
+};
 
 int main(int argc, char *argv[])
 {
@@ -16,9 +44,11 @@ int main(int argc, char *argv[])
 
     TaskScheduler *ts = device->getTaskScheduler();
 
+    MyTask mytask(ts);
+    ts->scheduleTask(&mytask);
+
     while(device->isRunning()) {
-        
-        device->pollEvents();
+        device->update();
         device->swapBuffers();
 
         fps++;

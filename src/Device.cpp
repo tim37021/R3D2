@@ -22,6 +22,8 @@ namespace r3d
 
             glewExperimental = GL_TRUE;
             glewInit();
+
+            glfwSwapInterval(0);
         }
 
         GLFWDevice::~GLFWDevice() 
@@ -39,14 +41,22 @@ namespace r3d
             return !glfwWindowShouldClose(m_Window);
         }
 
-        void GLFWDevice::pollEvents()
+        void GLFWDevice::update()
         {
+            m_TaskScheduler.step();
+            glfwMakeContextCurrent(m_Window);
             glfwPollEvents();
         }
 
         void GLFWDevice::swapBuffers()
         {
             glfwSwapBuffers(m_Window);
+        }
+
+        void GLFWDevice::setSwapInterval(uint32_t interval)
+        {
+            glfwMakeContextCurrent(m_Window);
+            glfwSwapInterval(interval);
         }
 
         double GLFWDevice::getTime()
