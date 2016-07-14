@@ -4,10 +4,10 @@ namespace r3d
 {
     namespace core
     {
-        void TaskScheduler::scheduleTask(Task *task)
+        void TaskScheduler::scheduleTask(uint32_t priority, Task *task)
         {
             m_Mutex.lock();
-            m_Queue.push(task);
+            m_Queue.push({priority, task});
             m_Mutex.unlock();
         }
 
@@ -15,7 +15,7 @@ namespace r3d
         {
             m_Mutex.lock();
             if(!m_Queue.empty()) {
-                Task *top_task = m_Queue.top();
+                Task *top_task = m_Queue.top().second;
                 m_Queue.pop();
                 m_Mutex.unlock();
 

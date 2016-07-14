@@ -8,32 +8,39 @@ using namespace rendering;
 
 Device *device=nullptr;
 
-class MyFinishTask: public Task
+
+class TaskTextureLoadFinish: public Task
 {
 public:
-    MyFinishTask(): Task(0){}
-    virtual ~MyFinishTask()=default;
+    TaskTextureLoadFinish(Image &img)
+    : m_Img(img)
+    {
+        
+    }
     virtual void execute()
     {
-        fprintf(stderr, "Finish image loading\n");
+        printf("Async Texture loading completed width=%d height=%d\n", m_Img.getSize().x, m_Img.getSize().y);
     }
+    Image &m_Img;
 };
 
-class MyTask: public Task
+class TaskTextureLoad: public ThreadTask
 {
 public:
-    MyTask(TaskScheduler *t): Task(0), ts(t){}
-    virtual ~MyTask()=default;
-    virtual void execute()
+    TaskTextureLoad(TaskScheduler *ts, const std::string &filename):
+        ThreadTask(ts, [&](){
+            std::this_thread::sleep_for(std::chrono::seconds(1));
+            m_Image.loadFromFile(filename);
+        }, 
+        &m_Finish), m_Finish(m_Image)
     {
-        image.loadFromFile("test.png");
-        ts->scheduleTask(&tfinish);
+
     }
 private:
-    TaskScheduler *ts;
-    MyFinishTask tfinish;
-    Image image;
+    Image m_Image;
+    TaskTextureLoadFinish m_Finish;
 };
+
 
 int main(int argc, char *argv[])
 {
@@ -44,8 +51,8 @@ int main(int argc, char *argv[])
 
     TaskScheduler *ts = device->getTaskScheduler();
 
-    MyTask mytask(ts);
-    ts->scheduleTask(&mytask);
+    TaskTextureLoad myTask(ts, "test.png");
+    ts->scheduleTask(0, &myTask);
 
     while(device->isRunning()) {
         device->update();
