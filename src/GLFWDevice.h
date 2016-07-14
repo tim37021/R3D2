@@ -3,6 +3,7 @@
 
 #include <cstdint>
 #include <R3D/Core/Device.h>
+#include "GLFWInput.h"
 
 struct GLFWwindow;
 
@@ -15,14 +16,16 @@ namespace r3d
         public:
             GLFWDevice(Vector2i size, const std::string &caption);
             ~GLFWDevice();
-            virtual void setWindowCaption(const std::string &caption);
-            virtual bool isRunning();
-            virtual void update();
-            virtual void setSwapInterval(uint32_t interval);
-            virtual void swapBuffers();
-            virtual double getTime();
+            virtual Input *getInput() override final;
+            virtual void setWindowCaption(const std::string &caption) override final;
+            virtual bool isRunning() const override final;
+            virtual void update() override final;
+            virtual void setSwapInterval(uint32_t interval) override final;
+            virtual void swapBuffers() override final;
+            virtual double getTime() const override final;
         private:
             GLFWwindow *m_Window;
+            GLFWInput m_Input;
         };
     }
 }

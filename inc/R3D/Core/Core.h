@@ -3,6 +3,7 @@
 
 #include <R3D/Core/Device.h>
 #include <R3D/Core/Exception.h>
+#include <R3D/Core/Input.h>
 #include <R3D/Core/Math.h>
 #include <R3D/Core/TaskScheduler.h>
 #include <R3D/Core/Task.h>

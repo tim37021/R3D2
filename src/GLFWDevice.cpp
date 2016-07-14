@@ -24,6 +24,9 @@ namespace r3d
             glewInit();
 
             glfwSwapInterval(0);
+
+            m_Input.setWindow(m_Window);
+            m_Input.init();
         }
 
         GLFWDevice::~GLFWDevice() 
@@ -31,12 +34,17 @@ namespace r3d
             glfwDestroyWindow(m_Window);
         }
 
+        Input *GLFWDevice::getInput()
+        {
+            return &m_Input;
+        }
+
         void GLFWDevice::setWindowCaption(const std::string &caption)
         {
             glfwSetWindowTitle(m_Window, caption.c_str());
         }
 
-        bool GLFWDevice::isRunning()
+        bool GLFWDevice::isRunning() const
         {
             return !glfwWindowShouldClose(m_Window);
         }
@@ -59,7 +67,7 @@ namespace r3d
             glfwSwapInterval(interval);
         }
 
-        double GLFWDevice::getTime()
+        double GLFWDevice::getTime() const
         {
             return glfwGetTime();
         }
