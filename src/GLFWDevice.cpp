@@ -51,9 +51,10 @@ namespace r3d
 
         void GLFWDevice::update()
         {
-            m_TaskScheduler.step();
             glfwMakeContextCurrent(m_Window);
             glfwPollEvents();
+            m_Input.update();
+            m_TaskScheduler.step();
         }
 
         void GLFWDevice::swapBuffers()
