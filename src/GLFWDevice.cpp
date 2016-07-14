@@ -64,6 +64,7 @@ namespace r3d
 
         void GLFWDevice::swapBuffers()
         {
+            Device::swapBuffers();
             glfwSwapBuffers(m_Window);
         }
 

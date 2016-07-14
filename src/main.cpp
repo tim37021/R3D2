@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
 
         fps++;
         if(device->getTime() - lastTime>1.0) {
-            sprintf(buf, "R3D Engine 2.0 - %d fps", fps);
+            sprintf(buf, "R3D Engine 2.0 - %.1f fps", device->getFrameRate());
             device->setWindowCaption(buf);
             fps=0;
             lastTime = device->getTime();
