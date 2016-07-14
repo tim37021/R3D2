@@ -56,6 +56,10 @@ int main(int argc, char *argv[])
 
     while(device->isRunning()) {
         device->update();
+
+        if(device->getInput()->isKeyDown(KeyCode::KEY_ENTER))
+            device->stop();
+
         device->swapBuffers();
 
         fps++;

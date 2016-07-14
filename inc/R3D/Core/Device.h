@@ -21,6 +21,7 @@ namespace r3d
             virtual Input *getInput()=0;
             virtual void setWindowCaption(const std::string &caption)=0;
             virtual bool isRunning() const =0;
+            virtual void stop() =0;
             virtual void update()=0;
             virtual void swapBuffers()=0;
             virtual void setSwapInterval(uint32_t)=0;

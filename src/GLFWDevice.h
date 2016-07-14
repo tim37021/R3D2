@@ -19,6 +19,7 @@ namespace r3d
             virtual Input *getInput() override final;
             virtual void setWindowCaption(const std::string &caption) override final;
             virtual bool isRunning() const override final;
+            virtual void stop() override final;
             virtual void update() override final;
             virtual void setSwapInterval(uint32_t interval) override final;
             virtual void swapBuffers() override final;

@@ -49,6 +49,11 @@ namespace r3d
             return !glfwWindowShouldClose(m_Window);
         }
 
+        void GLFWDevice::stop() 
+        {
+            glfwSetWindowShouldClose(m_Window, GLFW_TRUE);
+        }
+
         void GLFWDevice::update()
         {
             glfwMakeContextCurrent(m_Window);
