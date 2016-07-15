@@ -5,10 +5,15 @@
 #include <string>
 #include <R3D/Core/Math.h>
 #include <R3D/Core/TaskScheduler.h>
+#include <R3D/Rendering/TextureManager.h>
 #include <R3D/Core/Input.h>
 
 namespace r3d
 {
+    namespace rendering
+    {
+        class TextureManager;
+    }
     namespace core
     {
         class TaskScheduler;
@@ -16,12 +21,12 @@ namespace r3d
         {
         public:
             virtual ~Device()=default;
-            TaskScheduler *getTaskScheduler()
-            { return &m_TaskScheduler; }
+            virtual TaskScheduler *getTaskScheduler()=0;
             virtual Input *getInput()=0;
+            virtual rendering::TextureManager *getTextureManager()=0;
             virtual void setWindowCaption(const std::string &caption)=0;
             virtual bool isRunning() const =0;
-            virtual void stop() =0;
+            virtual void stop()=0;
             virtual void update()=0;
             virtual void swapBuffers()
             {
@@ -37,6 +42,7 @@ namespace r3d
             }
         protected:
             TaskScheduler m_TaskScheduler;
+            rendering::TextureManager m_TextureManager;
         private:
             float m_LastUpdateTime;
             float m_FrameRate;

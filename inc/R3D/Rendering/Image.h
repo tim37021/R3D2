@@ -21,7 +21,7 @@ namespace r3d
             core::Vector2i getSize() const
             { return m_Size; }
 
-            const uint8_t *data() const
+            const uint8_t *getData() const
             { return m_Data.data(); }
         private:
             std::vector<uint8_t> m_Data;

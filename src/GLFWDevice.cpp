@@ -31,6 +31,8 @@ namespace r3d
 
         GLFWDevice::~GLFWDevice() 
         {
+            glfwMakeContextCurrent(m_Window);
+            m_TextureManager.dispose();
             glfwDestroyWindow(m_Window);
         }
 

@@ -3,6 +3,8 @@
 
 #include <cstdint>
 #include <R3D/Core/Device.h>
+#include <R3D/Core/TaskScheduler.h>
+#include <R3D/Rendering/TextureManager.h>
 #include "GLFWInput.h"
 
 struct GLFWwindow;
@@ -16,7 +18,11 @@ namespace r3d
         public:
             GLFWDevice(Vector2i size, const std::string &caption);
             ~GLFWDevice();
+            virtual TaskScheduler *getTaskScheduler() override final
+            { return &m_TaskScheduler;  }
             virtual Input *getInput() override final;
+            virtual rendering::TextureManager *getTextureManager() override final
+            { return &m_TextureManager; }
             virtual void setWindowCaption(const std::string &caption) override final;
             virtual bool isRunning() const override final;
             virtual void stop() override final;
@@ -27,6 +33,8 @@ namespace r3d
         private:
             GLFWwindow *m_Window;
             GLFWInput m_Input;
+            TaskScheduler m_TaskScheduler;
+            rendering::TextureManager m_TextureManager;
         };
     }
 }
