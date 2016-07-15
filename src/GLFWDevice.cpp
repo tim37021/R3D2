@@ -58,7 +58,8 @@ namespace r3d
 
         void GLFWDevice::update()
         {
-            glfwMakeContextCurrent(m_Window);
+            if(glfwGetCurrentContext()!=m_Window)
+                glfwMakeContextCurrent(m_Window);
             glfwPollEvents();
             m_Input.update();
             m_TaskScheduler.step();
