@@ -5,9 +5,21 @@ namespace r3d
 {
     namespace rendering
     {
+        TextureManager::TextureManager()
+        {
+        }
+
         TextureManager::~TextureManager()
         {
             dispose();
+        }
+
+        void TextureManager::init()
+        {
+            m_DefaultTexture = registerTexture("DEFAULT_TEXTURE");
+            rendering::Image img;
+            img.loadFromFile("default.png");
+            m_DefaultTexture->load(img);
         }
 
         void TextureManager::dispose()
@@ -26,6 +38,12 @@ namespace r3d
                 return (m_TextureMap[name] = new OpenGLTexture());
             }else
                 return it->second;
+        }
+
+        Texture *TextureManager::fetchTexture(const std::string &name) const
+        {
+            auto it = m_TextureMap.find(name);
+            return (it == m_TextureMap.cend()? m_DefaultTexture: it->second);
         }
     }
 }

@@ -26,7 +26,10 @@ namespace r3d
             glfwSwapInterval(0);
 
             m_Input.setWindow(m_Window);
+
+            // Init must be called after context is made current
             m_Input.init();
+            m_TextureManager.init();
         }
 
         GLFWDevice::~GLFWDevice() 

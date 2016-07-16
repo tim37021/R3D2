@@ -13,16 +13,27 @@ namespace r3d
             PF_RGBA32
         };
 
+        class TextureManager;
+
         class Texture
         {
+            friend class TextureManager;
         public:
             virtual ~Texture()=default;
 
             virtual bool create(core::Vector2i size, PixelFormat pf)=0;
+
+            /*
+            Load image data to video card 
+            img: Image object
+            return value: nothing
+            */
             virtual bool load(Image &img)=0;
             virtual void bind(uint32_t channel)=0;
             core::Vector2i getSize() const
             { return m_Size; }
+        protected:
+            Texture()=default;
         private:
             Texture &operator=(const Texture &);
             core::Vector2i m_Size;
