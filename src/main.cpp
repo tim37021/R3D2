@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
     TaskScheduler *ts = device->getTaskScheduler();
 
     utils::AsyncTextureLoaderTask texture_loader(ts, device->getTextureManager(), "test.png", "test.png");
-    ts->scheduleTask(0, &texture_loader);
+    ts->scheduleTask(NORMAL_PRIORITY, &texture_loader);
 
     while(device->isRunning()) {
         device->update();

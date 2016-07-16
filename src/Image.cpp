@@ -17,6 +17,12 @@ namespace r3d
             loadFromFile(filename);
         }
 
+        void Image::dispose()
+        {
+            std::vector<uint8_t> t;
+            m_Data.swap(t);
+        }
+
         void Image::loadFromFile(const std::string &filename)
         {
             std::vector<uint8_t> file_contents;

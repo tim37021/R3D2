@@ -4,10 +4,16 @@ namespace r3d
 {
     namespace core
     {
+        TaskScheduler::TaskScheduler()
+            : m_ThreadPool(THREADPOOL_COUNT), m_Counter(0)
+        {
+
+        }
+
         void TaskScheduler::scheduleTask(uint32_t priority, Task *task)
         {
             m_Mutex.lock();
-            m_Queue.push({priority, task});
+            m_Queue.push({{priority, m_Counter++}, task});
             m_Mutex.unlock();
         }
 

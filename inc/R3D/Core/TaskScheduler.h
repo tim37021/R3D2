@@ -13,34 +13,38 @@ namespace r3d
 {
     namespace core
     {
-        typedef std::pair<uint32_t, Task *> QueueNode;
-
-        struct TaskOrder
-        {
-            bool operator()(const QueueNode &a, const QueueNode &b) const
+        struct Priority{
+            uint32_t m_Priority;
+            uint64_t m_TimeStamp;
+            Priority(uint32_t priority, uint64_t timestamp): m_Priority(priority), m_TimeStamp(timestamp)
             {
-                return a.first>b.first;
+
+            }
+
+            bool operator<(const Priority &rhs) const {
+                if(m_Priority == rhs.m_Priority)
+                    return m_TimeStamp < rhs.m_TimeStamp;
+                else
+                    return m_Priority > rhs.m_Priority;
             }
         };
+        typedef std::pair<Priority, Task *> QueueNode;
 
         class TaskScheduler
         {
         public:
-            TaskScheduler(): m_ThreadPool(THREADPOOL_COUNT)
-            {
-
-            }
+            TaskScheduler();
             void scheduleTask(uint32_t priority, Task *);
             void step();
 
             ThreadPool &getThreadPool()
             { return m_ThreadPool; }
         private:
-            std::priority_queue<QueueNode, std::vector<QueueNode>, 
-                TaskOrder> m_Queue;
+            std::priority_queue<QueueNode, std::vector<QueueNode>> m_Queue;
             std::mutex m_Mutex;
 
             ThreadPool m_ThreadPool;
+            uint64_t m_Counter;
         };
     }
 }

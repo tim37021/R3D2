@@ -16,6 +16,7 @@ namespace r3d
             Image();
             Image(const std::string &filename);
 
+            void dispose();
             void loadFromFile(const std::string &filename);
 
             core::Vector2i getSize() const

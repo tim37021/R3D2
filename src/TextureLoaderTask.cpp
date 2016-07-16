@@ -16,6 +16,7 @@ namespace r3d
         {
             m_Parent->m_Texture = m_Parent->m_TextureDone;
             m_Parent->m_Texture->load(m_Parent->m_Image);
+            m_Parent->m_Image.dispose();
         }
 
         AsyncTextureLoaderTask::AsyncTextureLoaderTask(core::TaskScheduler *ts, rendering::TextureManager *tmgr, 
