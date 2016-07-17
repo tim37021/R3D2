@@ -1,11 +1,14 @@
 #include <R3D/Rendering/TextureManager.h>
+#include <R3D/Core/Device.h>
+#include <R3D/Core/TaskScheduler.h>
 #include "OpenGLTexture.h"
 
 namespace r3d
 {
     namespace rendering
     {
-        TextureManager::TextureManager()
+        TextureManager::TextureManager(core::Device *device)
+            : m_Device(device)
         {
         }
 
@@ -44,6 +47,23 @@ namespace r3d
         {
             auto it = m_TextureMap.find(name);
             return (it == m_TextureMap.cend()? m_DefaultTexture: it->second);
+        }
+
+        void TextureManager::loadTextureFromFileAsync(const std::string &name, const std::string &filename, core::TaskStatus *status)
+        {
+            m_Device->getTaskScheduler()->getThreadPool().enqueue([=](){
+                // In thread
+                Image *image = new Image();
+                image->loadFromFile(filename);
+                if(image->isValid()) {
+                    m_Device->getTaskScheduler()->scheduleTask(NORMAL_PRIORITY, [=](){
+                        // In main thread
+                        Texture *texture = registerTexture(name);
+                        texture->load(*image);
+                        delete image;
+                    }, status);
+                }
+            });
         }
     }
 }

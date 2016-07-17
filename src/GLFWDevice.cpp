@@ -11,6 +11,7 @@ namespace r3d
     namespace core
     {
         GLFWDevice::GLFWDevice(Vector2i size, const std::string &caption)
+            : m_TextureManager(this)
         {
             glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
             glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);

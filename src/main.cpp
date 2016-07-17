@@ -14,14 +14,19 @@ int main(int argc, char *argv[])
     char buf[128];
     int fps=0;
     double lastTime=device->getTime();
+    
+    TextureManager *tm = device->getTextureManager();
 
-    TaskScheduler *ts = device->getTaskScheduler();
-
-    utils::AsyncTextureLoaderTask texture_loader(ts, device->getTextureManager(), "test.png", "test.png");
-    ts->scheduleTask(NORMAL_PRIORITY, &texture_loader);
+    TaskStatus status;
+    tm->loadTextureFromFileAsync("test.png", "test.png", &status);
 
     while(device->isRunning()) {
         device->update();
+
+        if(status == TaskStatus::TASK_READY) {
+            // Now texture was loaded asynchronously
+            //fprintf(stderr, "Image: %dx%d\n", tm->fetchTexture("test.png")->getSize().x, tm->fetchTexture("test.png")->getSize().y);
+        }
 
         if(device->getInput()->isKeyDown(KeyCode::KEY_ENTER))
             device->stop();

@@ -10,10 +10,12 @@ namespace r3d
 
         }
 
-        void TaskScheduler::scheduleTask(uint32_t priority, Task *task)
+        void TaskScheduler::scheduleTask(uint32_t priority, std::function<void ()> task, TaskStatus *status)
         {
             m_Mutex.lock();
-            m_Queue.push({{priority, m_Counter++}, task});
+            if(status)
+                *status = TaskStatus::TASK_QUEUING;
+            m_Queue.push({{priority, m_Counter++}, task, status});
             m_Mutex.unlock();
         }
 
@@ -21,11 +23,14 @@ namespace r3d
         {
             m_Mutex.lock();
             if(!m_Queue.empty()) {
-                Task *top_task = m_Queue.top().second;
+                std::function<void ()> top_task = m_Queue.top().m_Task;
+                TaskStatus *status = m_Queue.top().m_Status;
                 m_Queue.pop();
                 m_Mutex.unlock();
 
-                top_task->execute();
+                top_task();
+                if(status)
+                    *status = TaskStatus::TASK_READY;
             }else
                 m_Mutex.unlock();
         }

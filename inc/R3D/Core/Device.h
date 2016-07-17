@@ -10,10 +10,6 @@
 
 namespace r3d
 {
-    namespace rendering
-    {
-        class TextureManager;
-    }
     namespace core
     {
         class TaskScheduler;
@@ -40,9 +36,6 @@ namespace r3d
             {
                 return m_FrameRate;
             }
-        protected:
-            TaskScheduler m_TaskScheduler;
-            rendering::TextureManager m_TextureManager;
         private:
             float m_LastUpdateTime;
             float m_FrameRate;

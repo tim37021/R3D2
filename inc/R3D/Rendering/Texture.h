@@ -34,9 +34,9 @@ namespace r3d
             { return m_Size; }
         protected:
             Texture()=default;
+            core::Vector2i m_Size;
         private:
             Texture &operator=(const Texture &);
-            core::Vector2i m_Size;
         };
     }
 }

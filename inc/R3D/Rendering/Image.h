@@ -19,6 +19,9 @@ namespace r3d
             void dispose();
             void loadFromFile(const std::string &filename);
 
+            bool isValid() const
+            { return m_Size.x*m_Size.y!=0; }
+
             core::Vector2i getSize() const
             { return m_Size; }
 

@@ -23,6 +23,7 @@ namespace r3d
         {
             glBindTexture(GL_TEXTURE_2D, m_Id);
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, img.getSize().x, img.getSize().y, 0, GL_RGBA, GL_UNSIGNED_BYTE, img.getData());
+            m_Size = img.getSize();
             return true;
         }
 

@@ -5,15 +5,16 @@
 #include <mutex>
 #include <utility>
 #include <vector>
-#include <R3D/Core/Task.h>
 #include <R3D/Core/ThreadPool.h>
 #include <R3D/Config.h>
+#include <functional>
 
 namespace r3d
 {
     namespace core
     {
-        struct Priority{
+        struct Priority
+        {
             uint32_t m_Priority;
             uint64_t m_TimeStamp;
             Priority(uint32_t priority, uint64_t timestamp): m_Priority(priority), m_TimeStamp(timestamp)
@@ -21,20 +22,43 @@ namespace r3d
 
             }
 
-            bool operator<(const Priority &rhs) const {
+            bool operator<(const Priority &rhs) const
+            {
                 if(m_Priority == rhs.m_Priority)
                     return m_TimeStamp < rhs.m_TimeStamp;
                 else
                     return m_Priority > rhs.m_Priority;
             }
         };
-        typedef std::pair<Priority, Task *> QueueNode;
+
+        enum class TaskStatus
+        {
+            TASK_QUEUING,
+            TASK_READY
+        };
+
+        struct QueueNode
+        {
+            Priority m_Priority;
+            std::function<void ()> m_Task;
+            TaskStatus *m_Status;
+            QueueNode(Priority priority, std::function<void ()> task, TaskStatus *status)
+                : m_Priority(priority), m_Task(task), m_Status(status)
+            {
+
+            }
+            bool operator<(const QueueNode &rhs) const
+            {
+                return m_Priority<rhs.m_Priority;
+            }
+        };
 
         class TaskScheduler
         {
         public:
             TaskScheduler();
-            void scheduleTask(uint32_t priority, Task *);
+            void scheduleTask(uint32_t priority, std::function<void ()> task, TaskStatus *status=nullptr);
+
             void step();
 
             ThreadPool &getThreadPool()
