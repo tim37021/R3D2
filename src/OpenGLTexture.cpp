@@ -16,7 +16,23 @@ namespace r3d
 
         bool OpenGLTexture::create(core::Vector2i size, PixelFormat pf)
         {
-            return false;
+            glBindTexture(GL_TEXTURE_2D, m_Id);
+            GLenum internal, dataformat, datatype;
+            switch(pf) {
+                case PixelFormat::PF_D24:
+                    internal = GL_DEPTH_COMPONENT24; dataformat = GL_DEPTH_COMPONENT; datatype = GL_FLOAT; break;
+                case PixelFormat::PF_D32:
+                    internal = GL_DEPTH_COMPONENT32; dataformat = GL_DEPTH_COMPONENT; datatype = GL_FLOAT; break;
+                case PixelFormat::PF_R8G8B8:
+                    internal = GL_RGB; dataformat = GL_RGB; datatype = GL_UNSIGNED_BYTE; break;
+                case PixelFormat::PF_R8G8B8A8:
+                    internal = GL_RGBA; dataformat = GL_RGBA; datatype = GL_UNSIGNED_BYTE; break;
+            }
+            glTexImage2D(GL_TEXTURE_2D, 0, internal, size.x, size.y, 0, 
+                dataformat, datatype, nullptr);
+            m_Size = size;
+
+            return true;
         }
 
         bool OpenGLTexture::load(Image &img)

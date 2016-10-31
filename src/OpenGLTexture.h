@@ -16,6 +16,9 @@ namespace r3d
             virtual bool create(core::Vector2i size, PixelFormat pf) override;
             virtual bool load(Image &img) override;
             virtual void bind(uint32_t channel) override;
+
+            GLuint getID() const
+            { return m_Id; }
         private:
             GLuint m_Id;
         };

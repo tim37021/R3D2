@@ -62,7 +62,8 @@ namespace r3d
                         texture->load(*image);
                         delete image;
                     }, status);
-                }
+                } else
+                    *status = core::TaskStatus::TASK_READY;
             });
         }
     }

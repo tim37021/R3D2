@@ -9,8 +9,10 @@ namespace r3d
     namespace rendering
     {
         enum class PixelFormat{
-            PF_RGB24,
-            PF_RGBA32
+            PF_D24,
+            PF_D32,
+            PF_R8G8B8,
+            PF_R8G8B8A8,
         };
 
         class TextureManager;
