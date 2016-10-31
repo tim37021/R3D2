@@ -4,5 +4,6 @@
 #include <R3D/Rendering/Image.h>
 #include <R3D/Rendering/Texture.h>
 #include <R3D/Rendering/TextureManager.h>
+#include <R3D/Rendering/RenderTarget.h>
 
 #endif

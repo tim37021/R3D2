@@ -7,6 +7,7 @@
 #include <R3D/Core/TaskScheduler.h>
 #include <R3D/Rendering/TextureManager.h>
 #include <R3D/Core/Input.h>
+#include <R3D/Rendering/RenderTarget.h>
 
 namespace r3d
 {
@@ -16,7 +17,11 @@ namespace r3d
         class Device
         {
         public:
-            virtual ~Device()=default;
+            virtual ~Device()
+            {
+                for(auto target: m_RenderTargets)
+                    delete target;
+            }
             virtual TaskScheduler *getTaskScheduler()=0;
             virtual Input *getInput()=0;
             virtual rendering::TextureManager *getTextureManager()=0;
@@ -32,10 +37,15 @@ namespace r3d
 
             virtual void setSwapInterval(uint32_t)=0;
             virtual double getTime() const =0;
+
+            virtual rendering::RenderTarget *addRenderTarget()=0;
+
             float getFrameRate() const
             {
                 return m_FrameRate;
             }
+        protected:
+            std::vector<rendering::RenderTarget *> m_RenderTargets;
         private:
             float m_LastUpdateTime;
             float m_FrameRate;

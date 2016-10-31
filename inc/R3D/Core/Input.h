@@ -40,7 +40,7 @@ namespace r3d
             KEY_DOWN,
 
             KEY_ENTER,
-
+            KEY_ESCAPE,
             KEY_LAST
         };
 

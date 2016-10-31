@@ -11,6 +11,22 @@ using namespace rendering;
 
 Device *device=nullptr;
 
+
+RenderTarget *BuildGBuffer(Device *device, Vector2i size)
+{
+    RenderTarget *rt = device->addRenderTarget();
+    TextureManager *tm = device->getTextureManager();
+    std::vector<Texture *> textures = {tm->registerTexture("GBUFFER_COLOR")};
+    for(auto texture: textures)
+        texture->create(size, PixelFormat::PF_R8G8B8A8);
+    rt->attachTextures(textures);
+    Texture *depth_texture = tm->registerTexture("GBUFFER_DEPTH");
+    depth_texture->create(size, PixelFormat::PF_D24);
+    rt->attachDepthTexture(depth_texture);
+
+    return rt;
+}
+
 int main(int argc, char *argv[])
 {
     device = CreateDevice(Vector2i(800, 600), "R3D Engine 2.0");
@@ -22,15 +38,12 @@ int main(int argc, char *argv[])
     TextureManager *tm = device->getTextureManager();
 
 
-    TaskStatus status;
-    tm->loadTextureFromFileAsync("test.png", "test.png", &status);
+    RenderTarget *rt = BuildGBuffer(device, {800, 600});
 
     while(device->isRunning()) {
         device->update();
 
-        tm->fetchTexture("test.png");
-
-        if(device->getInput()->isKeyDown(KeyCode::KEY_ENTER))
+        if(device->getInput()->isKeyDown(KeyCode::KEY_ESCAPE))
             device->stop();
 
         device->swapBuffers();

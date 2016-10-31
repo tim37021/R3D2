@@ -30,6 +30,7 @@ namespace r3d
             virtual void setSwapInterval(uint32_t interval) override final;
             virtual void swapBuffers() override final;
             virtual double getTime() const override final;
+            virtual rendering::RenderTarget *addRenderTarget() override final;
         private:
             GLFWwindow *m_Window;
             GLFWInput m_Input;

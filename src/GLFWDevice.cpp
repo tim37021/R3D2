@@ -1,4 +1,5 @@
 #include "GLFWDevice.h"
+#include "OpenGLRenderTarget.h"
 #include <R3D/Core/Exception.h>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -84,6 +85,13 @@ namespace r3d
         double GLFWDevice::getTime() const
         {
             return glfwGetTime();
+        }
+
+        rendering::RenderTarget *GLFWDevice::addRenderTarget() 
+        {
+            rendering::RenderTarget *result = new rendering::OpenGLRenderTarget();
+            m_RenderTargets.push_back(result);
+            return result;
         }
 
         Device *CreateDevice(Vector2i size, const std::string &caption)
