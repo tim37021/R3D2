@@ -2,15 +2,24 @@
 
 #include <litehtml.h>
 #include <cstdio>
-#include <cstdio>
+#include <string>
+#include <fstream>
+#include <streambuf>
 #include <cmath>
-using namespace r3d;
 
+using namespace r3d;
 using namespace core;
 using namespace rendering;
 
 Device *device=nullptr;
 
+
+std::string LoadFile(const char *filename)
+{
+    std::ifstream t(filename);
+    return std::string(std::istreambuf_iterator<char>(t),
+                     std::istreambuf_iterator<char>());
+}
 
 RenderTarget *BuildGBuffer(Device *device, Vector2i size)
 {
@@ -37,14 +46,35 @@ int main(int argc, char *argv[])
     
     TextureManager *tm = device->getTextureManager();
 
-
     RenderTarget *rt = BuildGBuffer(device, {800, 600});
+
+    ShaderProgram *program = device->addShaderProgram();
+    program->create(LoadFile("vs.txt").c_str(), LoadFile("fs.txt").c_str());
+    program->setUniform("text", 0);
+
+    GLuint id;
+    glGenVertexArrays(1, &id);
 
     while(device->isRunning()) {
         device->update();
 
         if(device->getInput()->isKeyDown(KeyCode::KEY_ESCAPE))
             device->stop();
+
+        if(device->getInput()->isKeyDown(KeyCode::KEY_L))
+            tm->loadTextureFromFileAsync("./water.png", "water.png", nullptr);
+
+
+        rt->bind();
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        glBindVertexArray(id);
+        program->use();
+        tm->fetchTexture("./water.png")->bind(0);
+        glDrawArrays(GL_TRIANGLES, 0, 6);
+
+        device->getDefaultRenderTarget()->bind();
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         device->swapBuffers();
 

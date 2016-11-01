@@ -31,6 +31,7 @@ namespace r3d
             virtual void swapBuffers() override final;
             virtual double getTime() const override final;
             virtual rendering::RenderTarget *addRenderTarget() override final;
+            virtual rendering::RenderTarget *getDefaultRenderTarget() override final;
         private:
             GLFWwindow *m_Window;
             GLFWInput m_Input;

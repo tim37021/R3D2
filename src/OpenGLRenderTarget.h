@@ -9,6 +9,7 @@ namespace r3d
 	{
 		class OpenGLRenderTarget: public RenderTarget
 		{
+			friend OpenGLRenderTarget *GetDefaultOpenGLRenderTarget();
 		public:
 			OpenGLRenderTarget();
 			virtual ~OpenGLRenderTarget();
@@ -19,8 +20,11 @@ namespace r3d
 			GLuint getID() const
 			{ return m_Id; }
 		private:
+			OpenGLRenderTarget(GLuint id);
 			GLuint m_Id;
 		};
+
+		OpenGLRenderTarget *GetDefaultOpenGLRenderTarget();
 	}
 }
 

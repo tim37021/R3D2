@@ -14,7 +14,7 @@ namespace r3d
         GLFWDevice::GLFWDevice(Vector2i size, const std::string &caption)
             : m_TextureManager(this)
         {
-            glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+            glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
             glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
             m_Window = glfwCreateWindow(size.x, size.y, caption.c_str(), nullptr, nullptr);
             if(!m_Window)
@@ -92,6 +92,11 @@ namespace r3d
             rendering::RenderTarget *result = new rendering::OpenGLRenderTarget();
             m_RenderTargets.push_back(result);
             return result;
+        }
+
+        rendering::RenderTarget *GLFWDevice::getDefaultRenderTarget()
+        {
+            return rendering::GetDefaultOpenGLRenderTarget();
         }
 
         Device *CreateDevice(Vector2i size, const std::string &caption)

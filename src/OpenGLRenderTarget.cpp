@@ -11,9 +11,16 @@ namespace r3d
 			glGenFramebuffers(1, &m_Id);
 		}
 
+		OpenGLRenderTarget::OpenGLRenderTarget(GLuint id)
+			: RenderTarget(), m_Id(id)
+		{
+			
+		}
+
 		OpenGLRenderTarget::~OpenGLRenderTarget()
 		{
-			glDeleteFramebuffers(1, &m_Id);
+			if(m_Id!=0)
+				glDeleteFramebuffers(1, &m_Id);
 		}
 
 		void OpenGLRenderTarget::attachTextures(const std::vector<Texture *> &textures) 
@@ -42,6 +49,10 @@ namespace r3d
 			glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_Id);
 		}
 
-
+		OpenGLRenderTarget *GetDefaultOpenGLRenderTarget()
+		{
+			static OpenGLRenderTarget default_rt(0);
+			return &default_rt;
+		}
 	}
 }

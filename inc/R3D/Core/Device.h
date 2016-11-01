@@ -8,6 +8,7 @@
 #include <R3D/Rendering/TextureManager.h>
 #include <R3D/Core/Input.h>
 #include <R3D/Rendering/RenderTarget.h>
+#include <R3D/Rendering/ShaderProgram.h>
 
 namespace r3d
 {
@@ -21,6 +22,8 @@ namespace r3d
             {
                 for(auto target: m_RenderTargets)
                     delete target;
+                for(auto program: m_ShaderPrograms)
+                    delete program;
             }
             virtual TaskScheduler *getTaskScheduler()=0;
             virtual Input *getInput()=0;
@@ -39,6 +42,9 @@ namespace r3d
             virtual double getTime() const =0;
 
             virtual rendering::RenderTarget *addRenderTarget()=0;
+            virtual rendering::RenderTarget *getDefaultRenderTarget()=0;
+            rendering::ShaderProgram *addShaderProgram()
+            { return new rendering::ShaderProgram(); }
 
             float getFrameRate() const
             {
@@ -46,6 +52,7 @@ namespace r3d
             }
         protected:
             std::vector<rendering::RenderTarget *> m_RenderTargets;
+            std::vector<rendering::ShaderProgram *> m_ShaderPrograms;
         private:
             float m_LastUpdateTime;
             float m_FrameRate;
