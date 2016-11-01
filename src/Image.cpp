@@ -28,7 +28,9 @@ namespace r3d
             std::vector<uint8_t> file_contents;
             if(utils::ToUppercase(filename.substr(filename.length()-4))==".PNG") {
                 lodepng::load_file(file_contents, filename.c_str());
-                lodepng::decode(m_Data, m_Size.x, m_Size.y, file_contents);
+                uint32_t width, height;
+                lodepng::decode(m_Data, width, height, file_contents);
+                m_Size = {width, height};
             }
         }
     }
