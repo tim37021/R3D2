@@ -47,12 +47,14 @@ namespace r3d
 
         bool GLFWInput::isKeyDown(KeyCode key)
         {
-            return std::lower_bound(m_KeyDown.cbegin(), m_KeyDown.cend(), key)!=m_KeyDown.cend();
+            auto it = std::lower_bound(m_KeyDown.cbegin(), m_KeyDown.cend(), key);
+            return (it!=m_KeyDown.cend() && *it==key);
         }
 
         bool GLFWInput::isKeyUp(KeyCode key)
         {
-            return std::lower_bound(m_KeyUp.cbegin(), m_KeyUp.cend(), key)!=m_KeyUp.cend();
+            auto it = std::lower_bound(m_KeyUp.cbegin(), m_KeyUp.cend(), key);
+            return (it!=m_KeyUp.cend() && *it == key);
         }
 
         bool GLFWInput::isKeyHold(KeyCode key)

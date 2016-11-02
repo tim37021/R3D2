@@ -6,6 +6,7 @@
 #include <R3D/Core/Math.h>
 #include <R3D/Core/TaskScheduler.h>
 #include <R3D/Rendering/TextureManager.h>
+#include <R3D/Scene/SceneManager.h>
 #include <R3D/Core/Input.h>
 #include <R3D/Rendering/RenderTarget.h>
 #include <R3D/Rendering/ShaderProgram.h>
@@ -28,6 +29,7 @@ namespace r3d
             virtual TaskScheduler *getTaskScheduler()=0;
             virtual Input *getInput()=0;
             virtual rendering::TextureManager *getTextureManager()=0;
+            virtual scene::SceneManager *getSceneManager()=0;
             virtual void setWindowCaption(const std::string &caption)=0;
             virtual bool isRunning() const =0;
             virtual void stop()=0;

@@ -27,7 +27,7 @@ namespace r3d
                 if(m_Priority == rhs.m_Priority)
                     return m_TimeStamp < rhs.m_TimeStamp;
                 else
-                    return m_Priority > rhs.m_Priority;
+                    return m_Priority < rhs.m_Priority;
             }
         };
 

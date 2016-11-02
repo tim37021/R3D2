@@ -14,14 +14,14 @@ using namespace rendering;
 Device *device=nullptr;
 
 
-std::string LoadFile(const char *filename)
+static std::string LoadFile(const char *filename)
 {
     std::ifstream t(filename);
     return std::string(std::istreambuf_iterator<char>(t),
                      std::istreambuf_iterator<char>());
 }
 
-RenderTarget *BuildGBuffer(Device *device, Vector2i size)
+static RenderTarget *BuildGBuffer(Device *device, Vector2i size)
 {
     RenderTarget *rt = device->addRenderTarget();
     TextureManager *tm = device->getTextureManager();
@@ -55,6 +55,8 @@ int main(int argc, char *argv[])
     GLuint id;
     glGenVertexArrays(1, &id);
 
+    
+
     while(device->isRunning()) {
         device->update();
 
@@ -63,9 +65,11 @@ int main(int argc, char *argv[])
 
         if(device->getInput()->isKeyDown(KeyCode::KEY_L))
             tm->loadTextureFromFileAsync("./water.png", "water.png", nullptr);
+        if(device->getInput()->isKeyDown(KeyCode::KEY_M))
+            device->getSceneManager()->loadWavefrontAsync("sponza/sponza.obj");
 
 
-        rt->bind();
+        device->getDefaultRenderTarget()->bind();
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         glBindVertexArray(id);
@@ -73,8 +77,7 @@ int main(int argc, char *argv[])
         tm->fetchTexture("./water.png")->bind(0);
         glDrawArrays(GL_TRIANGLES, 0, 6);
 
-        device->getDefaultRenderTarget()->bind();
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 
         device->swapBuffers();
 

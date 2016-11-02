@@ -15,6 +15,15 @@ namespace r3d
         typedef glm::vec4 Vector4f;
 
         typedef glm::vec4 Color;
+
+        typedef glm::mat3 Matrix3;
+        typedef glm::mat4 Matrix4;
+
+        struct Vertex {
+            Vector3f m_Pos;
+            Vector2f m_TexCoord;
+            Vector3f m_Normal;
+        };
     }
 }
 
