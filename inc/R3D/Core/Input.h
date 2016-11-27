@@ -44,6 +44,19 @@ namespace r3d
             KEY_LAST
         };
 
+        enum class MouseButton
+        {
+            BUTTON_LEFT,
+            BUTTON_RIGHT,
+            BUTTON_MIDDLE,
+            BUTTON_4,
+            BUTTON_5,
+            BUTTON_6,
+            BUTTON_7,
+            BUTTON_8,
+            BUTTON_LAST
+        };
+
         class Input
         {
         public:
@@ -52,6 +65,12 @@ namespace r3d
             virtual bool isKeyDown(KeyCode)=0;
             virtual bool isKeyUp(KeyCode)=0;
             virtual bool isKeyHold(KeyCode)=0;
+            virtual bool isMouseButtonDown(MouseButton)=0;
+            virtual bool isMouseButtonUp(MouseButton)=0;
+            virtual bool isMouseButtonHold(MouseButton)=0;
+            virtual void getMousePosition(double *x, double *y)=0;
+            virtual void setMousePosition(double x, double y)=0;
+
         };
     }
 }

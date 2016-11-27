@@ -10,7 +10,7 @@ namespace r3d
 	namespace scene
 	{
 		SceneManager::SceneManager(core::Device *device)
-			: m_Device(device)
+			: m_Device(device), m_Camera(device)
 		{
 
 		}
@@ -19,6 +19,11 @@ namespace r3d
 		{
 			for(auto obj: m_Objects)
 				delete obj.second;
+		}
+
+		void SceneManager::update()
+		{
+			m_Camera.update();
 		}
 
 		void SceneManager::loadWavefrontAsync(const std::string &filename)
@@ -70,6 +75,13 @@ namespace r3d
 					fprintf(stderr, "%s is loaded successfully\n", filename.c_str());
 				});
 			});
+		}
+
+		void SceneManager::drawAll()
+		{
+			for(auto &mesh: m_Objects) {
+				mesh.second->draw();
+			}
 		}
 	}
 }

@@ -75,5 +75,14 @@ namespace r3d
 				glUniform1i(id, value);
 			}
 		}
+
+		void ShaderProgram::setUniform(const std::string &name, const core::Matrix4 &value)
+		{
+			GLint id = glGetUniformLocation(m_Id, name.c_str());
+			if(id != -1) {
+				glUseProgram(m_Id);
+				glUniformMatrix4fv(id, 1, GL_FALSE, core::ValuePointer(value));
+			}
+		}
 	}
 }

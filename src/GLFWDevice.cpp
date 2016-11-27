@@ -68,6 +68,7 @@ namespace r3d
             glfwPollEvents();
             m_Input.update();
             m_TaskScheduler.step();
+            m_SceneManager.update();
         }
 
         void GLFWDevice::swapBuffers()

@@ -49,13 +49,13 @@ int main(int argc, char *argv[])
     RenderTarget *rt = BuildGBuffer(device, {800, 600});
 
     ShaderProgram *program = device->addShaderProgram();
-    program->create(LoadFile("vs.txt").c_str(), LoadFile("fs.txt").c_str());
-    program->setUniform("text", 0);
+    program->create(LoadFile("vs2.txt").c_str(), LoadFile("fs2.txt").c_str());
+
 
     GLuint id;
     glGenVertexArrays(1, &id);
 
-    
+    auto *camera = device->getSceneManager()->getCamera();
 
     while(device->isRunning()) {
         device->update();
@@ -68,17 +68,22 @@ int main(int argc, char *argv[])
         if(device->getInput()->isKeyDown(KeyCode::KEY_M))
             device->getSceneManager()->loadWavefrontAsync("sponza/sponza.obj");
 
+        //auto view = LookAt({100.f, 100.f, 100.f}, {0.f}, {0.f, 1.f, 0.f});
+        program->setUniform("vp", camera->getProjectionMatrix()*camera->getViewMatrix());
+        program->setUniform("v", Matrix4(Matrix3(camera->getViewMatrix())));
 
         device->getDefaultRenderTarget()->bind();
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glEnable(GL_DEPTH_TEST);
 
+        program->use();
+        device->getSceneManager()->drawAll();
+/*
         glBindVertexArray(id);
         program->use();
         tm->fetchTexture("./water.png")->bind(0);
         glDrawArrays(GL_TRIANGLES, 0, 6);
-
-
-
+*/
         device->swapBuffers();
 
         fps++;

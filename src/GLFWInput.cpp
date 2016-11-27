@@ -9,6 +9,9 @@ static int GLFWKeyMap[]={GLFW_KEY_UNKNOWN, GLFW_KEY_A, GLFW_KEY_B, GLFW_KEY_C,
     GLFW_KEY_V, GLFW_KEY_W, GLFW_KEY_X, GLFW_KEY_Y, GLFW_KEY_Z, GLFW_KEY_LEFT, 
     GLFW_KEY_RIGHT, GLFW_KEY_UP, GLFW_KEY_DOWN, GLFW_KEY_ENTER, GLFW_KEY_ESCAPE};
 
+static int GLFWMouseButtonMap[] = {GLFW_MOUSE_BUTTON_1, GLFW_MOUSE_BUTTON_2, GLFW_MOUSE_BUTTON_3, GLFW_MOUSE_BUTTON_4, GLFW_MOUSE_BUTTON_5,
+GLFW_MOUSE_BUTTON_6, GLFW_MOUSE_BUTTON_7, GLFW_MOUSE_BUTTON_8};
+
 namespace r3d
 {
     namespace core
@@ -27,6 +30,11 @@ namespace r3d
 
             for(int i=0; i<static_cast<int>(KeyCode::KEY_LAST); i++)
                 m_LastKeyState[i] = (glfwGetKey(m_Window, GLFWKeyMap[static_cast<int>(i)])==GLFW_PRESS);
+
+            m_LastMouseBtnState.resize(static_cast<int>(MouseButton::BUTTON_LAST));
+            for(int i=0; i<static_cast<int>(MouseButton::BUTTON_LAST); i++) {
+                m_LastMouseBtnState[i] = (glfwGetMouseButton(m_Window, GLFWMouseButtonMap[static_cast<int>(i)])==GLFW_PRESS);
+            }
         }
 
         void GLFWInput::update()
@@ -42,6 +50,19 @@ namespace r3d
                         m_KeyUp.push_back(static_cast<KeyCode>(i));
                 }
                 m_LastKeyState[i] = state;
+            }
+
+            m_MouseBtnDown.clear();
+            m_MouseBtnUp.clear();
+            for(int i=0; i<static_cast<int>(MouseButton::BUTTON_LAST); i++) {
+                bool state = (glfwGetMouseButton(m_Window, GLFWMouseButtonMap[static_cast<int>(i)])==GLFW_PRESS);
+                if(state!=m_LastMouseBtnState[i]) {
+                    if(state)
+                        m_MouseBtnDown.push_back(static_cast<MouseButton>(i));
+                    else
+                        m_MouseBtnUp.push_back(static_cast<MouseButton>(i));
+                }
+                m_LastMouseBtnState[i] = state;
             }
         }
 
@@ -60,6 +81,33 @@ namespace r3d
         bool GLFWInput::isKeyHold(KeyCode key)
         {
             return glfwGetKey(m_Window, GLFWKeyMap[static_cast<int>(key)])==GLFW_PRESS;
+        }
+
+        bool GLFWInput::isMouseButtonDown(MouseButton btn)
+        {
+            auto it = std::lower_bound(m_MouseBtnDown.cbegin(), m_MouseBtnDown.cend(), btn);
+            return (it!=m_MouseBtnDown.cend() && *it==btn);
+        }
+
+        bool GLFWInput::isMouseButtonUp(MouseButton btn)
+        {
+            auto it = std::lower_bound(m_MouseBtnUp.cbegin(), m_MouseBtnUp.cend(), btn);
+            return (it!=m_MouseBtnUp.cend() && *it==btn);
+        }
+
+        bool GLFWInput::isMouseButtonHold(MouseButton btn)
+        {
+            return glfwGetMouseButton(m_Window, GLFWMouseButtonMap[static_cast<int>(btn)])==GLFW_PRESS;
+        }
+
+        void GLFWInput::getMousePosition(double *x, double *y)
+        {
+            return glfwGetCursorPos(m_Window, x, y);
+        }
+
+        void GLFWInput::setMousePosition(double x, double y)
+        {
+            return glfwSetCursorPos(m_Window, x, y);
         }
 
         void GLFWInput::setWindow(GLFWwindow *window)

@@ -23,6 +23,7 @@ namespace r3d
 			void setUniform(const std::string &name, core::Vector2f value);
 			void setUniform(const std::string &name, core::Vector3f value);
 			void setUniform(const std::string &name, core::Vector4f value);
+			void setUniform(const std::string &name, const core::Matrix4 &value);
 		private:
 			GLuint m_Id;
 			GLuint createShader(GLenum type, const char *source);

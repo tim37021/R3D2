@@ -66,9 +66,9 @@ namespace r3d
 			glEnableVertexAttribArray(0);
 			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(core::Vertex), reinterpret_cast<const GLvoid* >(0));
 			glEnableVertexAttribArray(1);
-			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(core::Vertex), reinterpret_cast<const GLvoid* >(sizeof(core::Vector3f)));
+			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(core::Vertex), reinterpret_cast<const GLvoid* >(sizeof(core::Vector3f)));
 			glEnableVertexAttribArray(2);
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(core::Vertex), reinterpret_cast<const GLvoid* >(sizeof(core::Vector3f)+sizeof(core::Vector2f)));
+			glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(core::Vertex), reinterpret_cast<const GLvoid* >(sizeof(core::Vector3f)+sizeof(core::Vector2f)));
 	
 			m_NumVertices = vertices.size();
 			m_NumIndices = 0;
